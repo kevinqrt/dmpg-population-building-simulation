@@ -1,0 +1,123 @@
+@startuml Class Diagram
+
+title Architecture
+
+package "Domain" {
+
+    class Building {
+        +id: int
+        +name: String
+        +buildingType: BuildingType
+        +footprint: List<Coordinate>
+        +centroid: Coordinate
+        +currentPersons: int
+
+        +address: Address
+        +data: AbstractBuildingData   <<source>>
+    }
+
+    class Address {
+        +city: String
+        +street: String
+        +houseNumber: String
+        +postcode: String
+    }
+}
+
+package "Provider" {
+
+    abstract class AbstractBuildingData {
+        +providerName: String
+        +rawTags: Map<String, String>
+    }
+
+    class OSMBuildingData {
+        +osmId: int
+        +timestamp: DateTime
+        +version: int
+        +changeset: int
+        +user: String
+        +uid: int
+        +nodeRefs: List<Long>
+    }
+
+    class GoogleBuildingData {
+        +googlePlaceId: String
+        +lastModified: DateTime
+        +confidenceScore: float
+        +sourceDetails: Map<String, String>
+    }
+
+    AbstractBuildingData <|-- OSMBuildingData
+    AbstractBuildingData <|-- GoogleBuildingData
+}
+
+
+package "Simulation" {
+
+    class Person {
+        +id: Integer
+        +home: Building
+        +workplace: Building
+        +currentLocation: Building
+    }
+
+    class PersonProfile {
+        age: int
+        ageGroup: AgeGroup
+        occupationType: OccupationType
+        routinePattern: Routine
+    }
+
+    enum AgeGroup {
+        CHILD
+        STUDENT
+        ADULT
+        SENIOR
+    }
+
+    enum OccupationType {
+        SCHOOL
+        WORK
+        RETIRED
+        UNEMPLOYED
+    }
+
+    class Activity {
+        +type: ActivityType
+        +startTime: Time
+        +endTime: Time
+        +targetBuilding: Building
+    }
+
+    enum ActivityType {
+        GO_TO_WORK
+        RETURN_FROM_WORK
+    }
+
+    class MovementEvent {
+        +timestamp: DateTime
+        +activityType: EventType
+        +type: EventType
+        +person: Person
+        +building: Building
+
+        +calculateRoute(Person, Building): Route
+    }
+
+    enum EventType {
+        ENTER
+        LEAVE
+    }
+
+    Person o-- PersonProfile
+    Person o-- Building
+    PersonProfile --> AgeGroup
+    PersonProfile --> OccupationType
+    Activity --> Building
+    MovementEvent --> Person
+    MovementEvent --> Building
+    Building o-- AbstractBuildingData
+}
+
+@enduml

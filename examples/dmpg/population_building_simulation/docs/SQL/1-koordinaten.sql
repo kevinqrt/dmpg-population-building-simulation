@@ -1,0 +1,21 @@
+CREATE OR REPLACE TABLE KOORDINATEN(
+    KOORDINATEN_ID INT CHECK ( KOORDINATEN_ID > 0 ),
+    Breitengrad     DECIMAL(10,8) NOT NULL,
+    Laengengrad     DECIMAL(11,8) NOT NULL,
+
+    PRIMARY KEY (KOORDINATEN_ID)
+);
+
+INSERT INTO Koordinaten (Koordinaten_ID, Breitengrad, Laengengrad) VALUES
+(1, 50.1109, 8.6821),
+(2, 48.1351, 11.5820),
+(3, 52.5200, 13.4050),
+(4, 53.5511, 9.9937),
+(5, 51.0504, 13.7373),
+(6, 49.0069, 8.4037),
+(7, 47.9990, 7.8421);
+
+
+
+
+

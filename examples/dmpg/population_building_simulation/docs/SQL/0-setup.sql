@@ -1,0 +1,5 @@
+DROP DATABASE IF EXISTS modsim;
+
+CREATE OR REPLACE DATABASE modsim;
+
+USE modsim;

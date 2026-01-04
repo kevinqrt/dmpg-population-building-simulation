@@ -1,0 +1,52 @@
+@startuml Relationales Schema
+
+'===========================
+' Tabellen (Entity-Struktur)
+'===========================
+
+entity Haus {
+  <u>ID</u>
+  Name
+  Grundriss
+  Flächenschwerpunkt
+}
+
+entity Wohnung {
+  <u>ID</u>
+  HausID
+  Name
+  Grundriss
+  Flächenschwerpunkt
+}
+
+entity Adresse {
+  <u>PLZ</u>
+  <u>Stadt</u>
+  <u>Straße</u>
+  <u>Hausnummer</u>
+}
+
+entity Erwachsener {
+  <u>ID</u>
+  Zuhause
+  Arbeitsort
+  aktuellePosition
+}
+
+entity Kind {
+  <u>ID</u>
+  Zuhause
+  Schulort
+  aktuellePosition
+}
+
+
+'===========================
+' Beziehungen (PK/FK)
+'===========================
+
+Haus::ID --> Adresse::PLZ
+Wohnung::ID --> Adresse::PLZ
+Wohnung::HausID --> Haus
+
+@enduml
