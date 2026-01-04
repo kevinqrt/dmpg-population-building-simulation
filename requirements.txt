@@ -1,0 +1,14 @@
+pre-commit
+simpy
+numpy
+pandas
+matplotlib
+seaborn
+graphviz
+scipy
+peewee
+tabulate
+requests==2.32.5
+shapely==2.1.2
+snakeviz
+scalene

@@ -1,0 +1,29 @@
+_extends: global_config.yaml
+simulation:
+  random_seed: 1
+  precision: 4
+model_parameters:
+  servers:
+    placement:
+      capacity: 1
+      processing_time:
+        distribution: triangular
+        params:
+        - 3.0
+        - 5.0
+        - 4.0
+    inspection:
+      capacity: 1
+      processing_time:
+        distribution: uniform
+        params:
+        - 2.0
+        - 4.0
+  routing:
+    good_parts_probability: 92.0
+    bad_parts_probability: 8.0
+  source:
+    arrival_rate:
+      distribution: expovariate
+      params:
+      - 0.16666666666666666

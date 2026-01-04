@@ -1,0 +1,541 @@
+@startuml
+set namespaceSeparator none
+top to bottom direction
+skinparam lineType ortho
+
+package "core" #ACD8FF{
+
+package "core.components" #82B4E6 {
+
+  together {
+
+    class "Combiner" as src.core.components.combiner.Combiner {
+    action
+    capacity : int
+    combination_rules : Optional[dict]
+    combiners
+    connection_cache : dict
+    entity_processing_times : dict
+    global_processing_times : NoneType
+    initialized : bool
+    input_queue : deque
+    is_processing
+    machine_breakdown_duration : Optional[Tuple[Callable, ...]]
+    member_input_queue : list
+    resource : Resource
+    storage_expression : NoneType
+    storage_queue : Optional[str]
+    time_between_machine_breakdowns : Optional[Tuple[Callable, ...]]
+    time_until_next_machine_breakdown
+    uptime_pivot_table : int
+    use_storage : bool
+    used_capacity : int
+    work_schedule : Optional[WorkScheduleWeek]
+    handle_entity_arrival(entity: Entity) -> None
+    reset() -> None
+    run() -> simpy.Event
+    }
+
+    class "ComponentType" as src.core.components.model.ComponentType {
+    name
+    }
+
+    class "Connection" as src.core.components.connection.Connection {
+    action
+    connections
+    entities_processed : int
+    entities_queue : deque
+    entity_type : Optional[str]
+    next_component
+    number_entered : int
+    origin_component
+    probability : Optional[float]
+    process_duration : Optional[float]
+    processing
+    vehicle : NoneType
+    handle_entity_arrival(entity: Entity)
+    log_and_process(component, next_component, entity: Entity)
+    reset()
+    run()
+    }
+
+    }
+
+    together {
+        class "DateTime" as src.core.components.date_time.DateTime {
+        initial_date_time : datetime
+        simpy_time_mapped_to : minute
+        get(time_now: Union[float, int], time_string_from_initial_date: bool, get_weekday_hour_minute: bool) -> str
+        map(time_component: TimeComponent) -> None
+        map_time_to_steps(days: Union[int, float], hours: Union[int, float], minutes: Union[int, float], seconds: Union[int, float]) -> Union[float, int]
+        set(initial_date_time: datetime) -> None
+        }
+
+        class "Entity" as src.core.components.entity.Entity {
+        batch_members : list
+        creation_time : Union[int, float]
+        destruction_time : Optional[Union[int, float]]
+        entity_type : str
+        is_parent : Optional[bool]
+        name : str
+        sequence_index
+        truck
+        }
+
+        class "EntityManager" as src.core.components.entity.EntityManager {
+        current_number_in_system : int
+        entities : list
+        last_change_time : int
+        max_time_in_system : float
+        min_time_in_system : float
+        number_created : int
+        number_destroyed : int
+        recycled_entities : list
+        time_weighted_sum : float
+        total_time_in_system : float
+        add_entity(entity: Entity) -> None
+        avg_time() -> float
+        destroy_all_entities() -> None
+        finalize_statistics() -> float
+        initialize(env: Environment) -> None
+        remove_entity(entity: Entity) -> None
+        }
+
+    }
+
+    together {
+        class "Model" as src.core.components.model.Model {
+        all_components : dict
+        components : dict
+        routing_group : dict
+        routing_group_strategy : dict
+        routing_table : NoneType, TextFileReader
+        routing_table_destination_column : NoneType, str
+        state_variables : dict
+        add_component(component, component_type: ComponentType)
+        add_member_to_group(group_name: str, member_name: str) -> None
+        add_routing_group(group_name: str, strategy) -> None
+        add_routing_table(routing_table_destination_column: str, routing_table: pd.DataFrame, routing_table_file: str)
+        add_state(state_name: str, state_value) -> None
+        get_component(component_type: ComponentType)
+        get_component_by_name(name: str)
+        get_components()
+        get_next_destenation_from_group(group_name: str)
+        get_state(state_name: str)
+        is_group(group_name: str) -> bool
+        remove_state(state_name: str) -> None
+        reset_all() -> None
+        update_state(state_name: str, value) -> None
+        }
+
+        class "Oven" as src.core.components.oven.Oven {
+        current_values : list
+        door_status : int
+        door_status_history : list
+        last_step : int
+        list_with_timestamps : list
+        list_with_timestamps_in_steps : list
+        number_of_calculates_between_two_time_stamps : Union[int, float]
+        proportionality_constant_door : float
+        proportionality_constant_temperature_oven : float
+        proportionality_constant_temperature_workpiece : float
+        show_diagram : bool
+        temperature_current_outside : Union[int, float]
+        temperature_current_setpoint : Union[int, float]
+        temperature_history_oven : list
+        temperature_history_setpoint : list
+        temperature_history_workpiece : list
+        temperature_initiale_setpoint : Union[int, float]
+        ask_required_temperature()
+        calculate_oven(current_step)
+        calculate_time_to_required_temperature() -> Union[int, float]
+        show_infos()
+        update_oven(heating_status: bool, door_status: bool)
+        }
+
+        class "Separator" as src.core.components.separator.Separator {
+        action
+        capacity : int
+        connection_cache : dict
+        entity_processing_times : dict
+        global_processing_times : NoneType
+        initialized : bool
+        input_queue : deque
+        is_processing
+        machine_breakdown_duration : Optional[Tuple[Callable, ...]]
+        processing_time_dwp : NoneType
+        queue_length : int
+        queue_lengths : list
+        queue_times : list
+        queuing_order
+        resource : Resource
+        separators
+        storage_expression : NoneType
+        storage_queue : Optional[str]
+        time_between_machine_breakdowns : Optional[Tuple[Callable, ...]]
+        time_until_next_machine_breakdown
+        use_storage : bool
+        used_capacity : int
+        work_schedule : Optional[WorkScheduleWeek]
+        handle_entity_arrival(entity: Entity) -> None
+        reset() -> None
+        run() -> simpy.Event
+        }
+
+    }
+
+    together {
+        class "Server" as src.core.components.server.Server {
+        action
+        capacity : int
+        connection_cache : dict
+        entity_processing_times : dict
+        global_processing_times : NoneType
+        initialized : bool
+        input_queue : deque
+        is_processing
+        machine_breakdown_duration : Optional[Tuple[Callable, ...]]
+        number_downtimes_pivot_table : int
+        number_entered_pivot_table : int
+        number_exited_pivot_table : int
+        number_uptimes_pivot_table : int
+        oven : NoneType
+        processing_time_dwp : NoneType
+        queue_length : int
+        queue_lengths : list
+        queue_times : list
+        queuing_order
+        resource : Resource
+        servers
+        storage_expression : NoneType
+        storage_queue : NoneType
+        time_between_machine_breakdowns : Optional[Tuple[Callable, ...]]
+        time_until_next_machine_breakdown
+        use_storage : bool
+        used_capacity : int
+        work_schedule : Optional[WorkScheduleWeek]
+        handle_entity_arrival(entity: Entity) -> None
+        reset() -> None
+        run() -> simpy.Event
+        }
+
+        class "Sink" as src.core.components.sink.Sink {
+        addon_processing_done_method_with_parameters : NoneType
+        entities_processed : int
+        max_time_in_system_pivot_table
+        min_time_in_system_pivot_table
+        name : str
+        number_entered_pivot_table
+        processed_entities : list
+        sinks
+        source : Optional[Source]
+        store_processed_entities : bool
+        tally_statistic
+        total_time_in_system
+        truck_manager : Optional[TruckManager]
+        handle_entity_arrival(entity: Entity) -> None
+        reset()
+        }
+
+        class "Source" as src.core.components.source.Source {
+        action
+        arrival_table : NoneType, TextFileReader
+        arrival_table_column_name
+        arrival_table_index : NoneType, int
+        arrival_table_parameter_name : Optional[dict]
+        creation_time_dwp : NoneType
+        entities : list
+        entities_created_pivot_table : int
+        entity_class : Type[Entity]
+        entity_type : str
+        inital_sequnece_index : int
+        is_parent_source : Optional[bool]
+        max_arrival : Optional[int]
+        name
+        next_components : list
+        number_exited_pivot_table : int
+        sources
+        truck_manager : Optional[TruckManager]
+        arrival_table_based_wait_time() -> Union[int, float]
+        generate_single_entity()
+        reset()
+        run()
+        }
+
+    }
+
+
+        class "Vehicle" as src.core.components.vehicle.Vehicle {
+        batching : bool
+        current_queue_length : int
+        entities_transported : int
+        entity_queue : List[Tuple[Entity, Callable, float]], list
+        env : Environment
+        name : str
+        queue_lengths : list
+        queue_times : list
+        resource : Resource
+        time_idle_start : NoneType
+        time_utilized_over_time : list
+        total_travel_time : int
+        total_trips : int
+        travel_time_dwp : Tuple[Callable, ...]
+        utilized_time : int
+        vehicle_capacity : int
+        vehicles
+        handle_entity_arrival(entity: Entity, destination)
+        reset()
+        start_transport()
+        transport_entities()
+        }
+
+
+
+    together {
+        class "WorkScheduleDay" as src.core.components.work_schedule.WorkScheduleDay {
+        work_shift : dict, list
+        clear()
+        get(day_number: int) -> List[Tuple[int, int, int]]
+        set_time(start_hour: int, start_minute: int, end_hour: int, end_minute: int, capacity: int)
+        }
+
+        class "WorkScheduleWeek" as src.core.components.work_schedule.WorkScheduleWeek {
+        start_simulation_in_steps
+        work_schedule
+        find_overlaps()
+        get()
+        print_stats(name)
+        }
+
+    }
+
+
+
+    package "logistic" #5A82B4{
+
+        together {
+
+            class "Storage" as src.core.components.logistic.storage.Storage {
+            action
+            capacity : int
+            connection_cache : dict
+            entity_processing_times : Optional[Dict[str, float]]
+            global_processing_times : NoneType
+            initialized : bool
+            input_queue : deque
+            is_waiting_for_entity : NoneType
+            number_entered_pivot_table : int
+            number_exited_pivot_table : int
+            processing_time_dwp : NoneType
+            queue_length : int
+            queue_lengths : list
+            queue_times : list
+            queuing_order
+            resource : Resource
+            start_processing_time : int
+            storage_expression : NoneType
+            storages
+            total_entities_processed_pivot_table : int
+            total_processing_time_pivot_table : int
+            units_allocated_pivot_table : int
+            units_utilized_over_time : list
+            units_utilized_pivot_table : int
+            used_capacity : int
+            handle_entity_arrival(entity: Entity) -> None
+            process_entity(entity: Entity)
+            reset()
+            run() -> Event
+            }
+
+            class "StorageManager" as src.core.components.logistic.storage_manager.StorageManager {
+            env : NoneType
+            storage_queues : dict
+            waiting_server_pools : dict
+            add_storage_queue(queue: str)
+            add_to_queue(queue: str, storage_event: StorageEvent)
+            is_server_waiting(queue: str) -> b‚ol
+            release_next_entity(queue: str, server)
+            remove_from_pool(queue: str, server)
+            reset()
+            }
+        }
+    }
+
+}
+
+
+package "core.components_abstract" #82B4E6 {
+
+  together {
+class "ComponentsPivot" as src.core.components_abstract.components_pivot_stats.ComponentsPivot {
+  current_queue_length : int
+  entities_created_pivot_table : int
+  entities_transported : int
+  max_time_in_system_pivot_table : int
+  min_time_in_system_pivot_table : float
+  number_combinded_exited_pivot_table : int
+  number_downtimes_pivot_table : int
+  number_entered_pivot_table : int
+  number_exited_pivot_table : int
+  number_members_entered_pivot_table : int
+  number_members_exited_pivot_table : int
+  number_parents_entered_pivot_table : int
+  number_parents_exited_pivot_table : int
+  number_uptimes_pivot_table : int
+  queue_lengths : list
+  queue_times : list
+  start_processing_time : int
+  time_utilized_over_time : list
+  total_downtime_pivot_table : int
+  total_entities_processed_pivot_table : int
+  total_processing_time_pivot_table : int
+  total_time_in_system : int
+  total_travel_time : int
+  total_trips : int
+  total_uptime_pivot_table : int
+  units_allocated_pivot_table : int
+  units_utilized_over_time : list
+  units_utilized_pivot_table : int
+  uptime_pivot_table : int
+  utilized_time : int
+}
+
+class "ResetAbleNamedObject" as src.core.components_abstract.resetable_named_object.ResetAbleNamedObject {
+  env : Environment
+  name : str
+  reset()
+}
+
+class "ResetAbleNamedObjectManager" as src.core.components_abstract.resetable_named_object.ResetAbleNamedObjectManager {
+  iteration_object : int
+  resetable_named_objects : list
+  add(rno)
+  reset_all()
+}
+
+  }
+
+  together {
+class "RoutingObject" as src.core.components_abstract.routing_object.RoutingObject {
+  connection_cache : dict
+  connections : dict
+  env : Environment
+  next_components : list
+  number_exited : int
+  routing_expression : NoneType
+  sequence_routing : bool
+  connect(next_server, probability: float, process_duration: float, entity_type: str, vehicle)
+  route_entity(entity: Entity)
+  update_connection_cache()
+}
+
+class "Singleton" as src.core.components_abstract.singleton.Singleton {
+}
+
+  }
+}
+
+package "core.types" #82B4E6 {
+
+  together {
+class "QueueType" as src.core.types.queue_type.QueueType {
+  name
+}
+
+class "TimeComponent" as src.core.types.time_component.TimeComponent {
+  name
+}
+
+  }
+}
+
+package "core.simulation" #82B4E6 {
+
+  together {
+class "ReplicationRunner" as src.core.simulation.replication.ReplicationRunner {
+  all_entity_stats : list
+  all_server_stats : dict
+  all_sink_stats : dict
+  all_source_stats : dict
+  all_storage_stats : dict
+  all_vehicle_stats : dict
+  model
+  multiprocessing : bool
+  num_replications
+  start_time
+  steps
+  warm_up : NoneType
+  run(store_pivot_in_file: str, new_database: bool)
+}
+
+class "SimulationRunner" as src.core.simulation.runner.SimulationRunner {
+  model
+  steps
+  warm_up : NoneType
+  run(store_pivot_in_file: str, new_database: bool) -> pd.DataFrame
+}
+
+  }
+}
+
+package "core.global_imports" #82B4E6 {
+
+  together {
+class "Stats" as src.core.global_imports.Stats {
+  all_detailed_stats : NoneType
+}
+
+  }
+}
+
+package "core.event" #82B4E6 {
+
+  together {
+class "StorageEvent" as src.core.event.storage_event.StorageEvent {
+  callbacks : List
+  called : Optional[Entity]
+  env : Environment
+}
+
+  }
+}
+
+package "core.statistics" #82B4E6 {
+
+  together {
+class "TallyStatistic" as src.core.statistics.tally_statistic.TallyStatistic {
+  num_times_processed_list : list
+  calculate_statistics() -> Tuple[Optional[float], Optional[float], Optional[float]]
+  record(num_times_processed: int)
+}
+
+  }
+}
+
+}
+
+src.core.components.combiner.Combiner --|> src.core.components_abstract.components_pivot_stats.ComponentsPivot
+src.core.components.combiner.Combiner --|> src.core.components_abstract.resetable_named_object.ResetAbleNamedObject
+src.core.components.combiner.Combiner --|> src.core.components_abstract.routing_object.RoutingObject
+src.core.components.connection.Connection --|> src.core.components_abstract.resetable_named_object.ResetAbleNamedObject
+src.core.components.connection.Connection --|> src.core.components_abstract.routing_object.RoutingObject
+src.core.components.date_time.DateTime --|> src.core.components_abstract.singleton.Singleton
+src.core.components.entity.EntityManager --|> src.core.components_abstract.singleton.Singleton
+src.core.components.logistic.storage.Storage --|> src.core.components_abstract.resetable_named_object.ResetAbleNamedObject
+src.core.components.logistic.storage.Storage --|> src.core.components_abstract.routing_object.RoutingObject
+src.core.components.logistic.storage_manager.StorageManager --|> src.core.components_abstract.singleton.Singleton
+src.core.components.separator.Separator --|> src.core.components_abstract.components_pivot_stats.ComponentsPivot
+src.core.components.separator.Separator --|> src.core.components_abstract.resetable_named_object.ResetAbleNamedObject
+src.core.components.separator.Separator --|> src.core.components_abstract.routing_object.RoutingObject
+src.core.components.server.Server --|> src.core.components_abstract.components_pivot_stats.ComponentsPivot
+src.core.components.server.Server --|> src.core.components_abstract.resetable_named_object.ResetAbleNamedObject
+src.core.components.server.Server --|> src.core.components_abstract.routing_object.RoutingObject
+src.core.components.sink.Sink --|> src.core.components_abstract.resetable_named_object.ResetAbleNamedObject
+src.core.components.source.Source --|> src.core.components_abstract.components_pivot_stats.ComponentsPivot
+src.core.components.source.Source --|> src.core.components_abstract.resetable_named_object.ResetAbleNamedObject
+src.core.components.source.Source --|> src.core.components_abstract.routing_object.RoutingObject
+src.core.components.vehicle.Vehicle --|> src.core.components_abstract.components_pivot_stats.ComponentsPivot
+src.core.components.vehicle.Vehicle --|> src.core.components_abstract.resetable_named_object.ResetAbleNamedObject
+src.core.global_imports.Stats --|> src.core.components_abstract.singleton.Singleton
+
+@enduml

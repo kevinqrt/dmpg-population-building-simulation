@@ -1,0 +1,4 @@
+0.1 - basic simulation functionality (multithreading, reporting, visualization), test cases, example model
+0.2 - structuring, documentation
+0.3 - intermediate simulation functionality discrete
+0.4 - documentation, typing, additional core components (e.g., storage, combiner, separator, continuous server)

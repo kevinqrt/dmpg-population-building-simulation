@@ -1,0 +1,158 @@
+# Inherit global settings
+inherits_from: global_config.yaml
+
+# Experiment metadata
+experiment:
+  name: "ATM Service Optimization Study"
+  description: "ATM configurations under varying demand levels"
+
+# Tracked statistics for the experiment
+tracked_statistics:
+  - component_type: "Source"
+    component_name: "CustomerArrival"
+    statistic: "NumberCreated"
+    display_name: "Customers_Generated"
+
+  - component_type: "Server"
+    component_name: "ATM"
+    statistic: "ScheduledUtilization"
+    display_name: "ATM_Utilization"
+
+  - component_type: "Server"
+    component_name: "ATM"
+    statistic: "TimeInQueue (average)"
+    display_name: "Avg_Queue_Time"
+
+  - component_type: "Server"
+    component_name: "ATM"
+    statistic: "EntitiesInQueue (max)"
+    display_name: "Peak_Queue_Length"
+
+  - component_type: "Server"
+    component_name: "ATM"
+    statistic: "TimeProcessing (average)"
+    display_name: "Avg_Service_Time"
+
+  - component_type: "Sink"
+    component_name: "Exit"
+    statistic: "NumberEntered"
+    display_name: "Customers_Served"
+
+  - component_type: "Sink"
+    component_name: "Exit"
+    statistic: "TimeInSystem (average)"
+    display_name: "Avg_System_Time"
+
+# Parameter display names for cleaner output
+parameter_display_names:
+  arrival_rate: "Arrival_Rate_per_Min"
+  ATM.capacity: "Number_of_ATMs"
+  service_time_min: "Min_Service_Time"
+  service_time_max: "Max_Service_Time"
+
+# Simulation settings for experiment
+simulation_settings:
+  steps: 5000
+  replications: 30
+  warm_up: 600
+  multiprocessing: true
+
+# Scenario definitions
+scenarios:
+  # Low demand scenarios
+  - name: "Low_Demand_1ATM"
+    description: "Low customer arrival rate with 1 ATM"
+    parameters:
+      arrival_rate: 0.15
+      ATM.capacity: 1
+      service_time_min: 3
+      service_time_max: 7
+
+  - name: "Low_Demand_2ATM"
+    description: "Low customer arrival rate with 2 ATMs"
+    parameters:
+      arrival_rate: 0.15
+      ATM.capacity: 2
+      service_time_min: 3
+      service_time_max: 7
+
+  # Medium demand scenarios
+  - name: "Medium_Demand_1ATM"
+    description: "Medium customer arrival rate with 1 ATM"
+    parameters:
+      arrival_rate: 0.25
+      ATM.capacity: 1
+      service_time_min: 3
+      service_time_max: 7
+
+  - name: "Medium_Demand_2ATM"
+    description: "Medium customer arrival rate with 2 ATMs"
+    parameters:
+      arrival_rate: 0.25
+      ATM.capacity: 2
+      service_time_min: 3
+      service_time_max: 7
+
+  - name: "Medium_Demand_3ATM"
+    description: "Medium customer arrival rate with 3 ATMs"
+    parameters:
+      arrival_rate: 0.25
+      ATM.capacity: 3
+      service_time_min: 3
+      service_time_max: 7
+
+  # High demand scenarios
+  - name: "High_Demand_1ATM"
+    description: "High customer arrival rate with 1 ATM"
+    parameters:
+      arrival_rate: 0.4
+      ATM.capacity: 1
+      service_time_min: 3
+      service_time_max: 7
+
+  - name: "High_Demand_2ATM"
+    description: "High customer arrival rate with 2 ATMs"
+    parameters:
+      arrival_rate: 0.4
+      ATM.capacity: 2
+      service_time_min: 3
+      service_time_max: 7
+
+  - name: "High_Demand_3ATM"
+    description: "High customer arrival rate with 3 ATMs"
+    parameters:
+      arrival_rate: 0.4
+      ATM.capacity: 3
+      service_time_min: 3
+      service_time_max: 7
+
+  # Fast service scenarios
+  - name: "Fast_Service_1ATM"
+    description: "Fast service times with 1 ATM"
+    parameters:
+      arrival_rate: 0.25
+      ATM.capacity: 1
+      service_time_min: 1.5
+      service_time_max: 3.5
+
+  - name: "Fast_Service_2ATM"
+    description: "Fast service times with 2 ATMs"
+    parameters:
+      arrival_rate: 0.25
+      ATM.capacity: 2
+      service_time_min: 1.5
+      service_time_max: 3.5
+
+# Visualization settings
+visualization:
+  scenario_colors:
+    Low_Demand_1ATM: "#1f77b4"
+    Low_Demand_2ATM: "#aec7e8"
+    Medium_Demand_1ATM: "#ff7f0e"
+    Medium_Demand_2ATM: "#ffbb78"
+    Medium_Demand_3ATM: "#2ca02c"
+    High_Demand_1ATM: "#d62728"
+    High_Demand_2ATM: "#ff9896"
+    High_Demand_3ATM: "#9467bd"
+    Fast_Service_1ATM: "#8c564b"
+    Fast_Service_2ATM: "#c49c94"

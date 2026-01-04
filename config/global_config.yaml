@@ -1,0 +1,56 @@
+# Global Configuration for Discrete Event Simulation Framework
+# This file contains all configurable settings for the simulation framework
+
+# =============================================================================
+# SIMULATION PARAMETERS
+# =============================================================================
+simulation:
+  random_seed: 1                    # Random seed for reproducibility
+  duration_warm_up: 0               # Warm-up duration to ignore in statistics
+  precision: 4                      # Decimal precision for numeric formatting (increased for test compatibility)
+
+# =============================================================================
+# STATISTICS COLLECTION
+# =============================================================================
+statistics:
+  collect_entity_type_stats: false  # Collect detailed statistics per entity type
+  confidence_level: 0.95           # Confidence level for statistical calculations
+
+# =============================================================================
+# PERFORMANCE AND MEMORY MANAGEMENT
+# =============================================================================
+performance:
+  max_recycled_entities: 5000       # Maximum entities to keep in recycling pool
+  entity_pool:                      # Pool sizes by entity type
+    default: 10000                  # Default pool size for any entity type
+    by_type:                        # Specific pool sizes by entity type
+      Entity: 10000
+      Truck: 500
+      Worker: 200
+      Material: 1000
+
+# =============================================================================
+# DATABASE CONFIGURATION
+# =============================================================================
+database:
+  in_memory: true                   # Use in-memory database vs persistent
+
+# =============================================================================
+# LOGGING CONFIGURATION
+# =============================================================================
+logging:
+  level: INFO                       # Log level: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s %(levelname)s %(message)s"  # Log message format
+
+# =============================================================================
+# VISUALIZATION SETTINGS
+# =============================================================================
+visualization:
+  matplotlib_log_level: ERROR      # Suppress matplotlib warnings
+  default_figure_size: [10, 6]     # Default figure size for plots
+
+# =============================================================================
+# MULTIPROCESSING SETTINGS
+# =============================================================================
+multiprocessing:
+  enabled: true                    # Enable multiprocessing for replications
