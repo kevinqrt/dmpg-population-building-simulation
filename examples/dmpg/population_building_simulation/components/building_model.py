@@ -25,9 +25,20 @@ class Building(Model):
     @staticmethod
     def _map_osm_element_to_building(element: dict) -> Building:
         osm_id = element.get("id")
-        osm_type = element.get("type")
+        osm_type = element.get("type")  # way | relation
 
-        lat, lon = Building._compute_centroid(element) or (None, None)
+        center = element.get("center") or {}
+
+        lat = center.get("lat")
+        lon = center.get("lon")
+
+        # Fallback, falls kein center vorhanden ist
+        if lat is None or lon is None:
+            lat, lon = Building._compute_centroid(element) or (None, None)
+
+        # Fallback, falls kein center vorhanden ist
+        if lat is None or lon is None:
+            lat, lon = Building._compute_centroid(element) or (None, None)
 
         return Building(
             osm_id=osm_id,
@@ -92,7 +103,7 @@ class Building(Model):
         a list of building elements (OSM raw dicts).
         """
 
-        url = "http://overpass-api.de/api/interpreter"
+        url = "https://overpass.kumi.systems/api/interpreter"
 
         # Docs: https://dev.overpass-api.de/
         overpass_query = f"""
@@ -123,7 +134,7 @@ class Building(Model):
 
         if response.status_code != 200:
             raise RuntimeError(
-                f"Overpass API request failed with {response.status_code}"
+                f"Overpass API request failed with {response.status_code} - {response.text}"
             )
 
         data = response.json()
