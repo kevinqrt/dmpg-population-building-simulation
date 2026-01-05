@@ -1,22 +1,20 @@
-CREATE TABLE WOHNUNG (
-    WOHNUNGSNUMMER   INT CHECK ( WOHNUNGSNUMMER > 0 ),
-    EIGENTUEMER_SSN  INT,
-    GEBAEUDE_ID      INT NOT NULL,
-    BARRIEREFREI     BOOLEAN,
-    AUSSTATTUNG      VARCHAR(100),
-    BEWOHNER_ANZAHL  INT CHECK (BEWOHNER_ANZAHL >= 0),
+CREATE TABLE Wohnung (
+wohnungsnummer INT CHECK (wohnungsnummer >= 0),
+barrierefrei BOOLEAN,
+ausstattung VARCHAR(100),
+bewohner_anzahl INT CHECK (bewohner_anzahl BETWEEN 0 AND 50),
+gebaeude_id INT NOT NULL,
 
-    PRIMARY KEY (WOHNUNGSNUMMER)
+PRIMARY KEY (wohnungsnummer)
 );
 
-INSERT INTO Wohnung (Wohnungsnummer, Eigentuemer_SSN, Gebaeude_ID, Barrierefrei, Ausstattung, Bewohner_Anzahl) VALUES
-(1, 1001, 1, TRUE,  'Standard', 2),
-(2, 1002, 1, FALSE, 'Luxus',    3),
-(3, 1003, 2, TRUE,  'Basis',    1),
-(4, 1004, 3, FALSE, 'Standard', 4),
-(5, 1005, 4, TRUE,  'Luxus',    2),
-(6, 1006, 5, FALSE, 'Basis',    1),
-(7, 1007, 6, TRUE,  'Standard', 3);
-
+INSERT INTO Wohnung VALUES
+                        (1, TRUE, 'Standard', 2, 1),
+                        (2, FALSE, 'Luxus', 4, 2),
+                        (3, TRUE, 'Modern', 3, 3),
+                        (4, FALSE, 'Einfach', 1, 4),
+                        (5, TRUE, 'Gehoben', 5, 5),
+                        (6, FALSE, 'Standard', 2, 6),
+                        (7, TRUE, 'Modern', 3, 7);
 
 

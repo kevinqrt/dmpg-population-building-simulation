@@ -1,21 +1,26 @@
-CREATE OR REPLACE TABLE ADRESSE(
-     ADRESSE_ID        INT CHECK ( ADRESSE_ID > 0 ),
-     Koordinaten_ID    INT REFERENCES KOORDINATEN(Koordinaten_ID),
-     Ort               VARCHAR(100) NOT NULL,
-     Hausnummer        VARCHAR(10),
-     PLZ               INT,
-     Hausnummer_zusatz VARCHAR(10),
+CREATE TABLE Adresse (
+adresse_id INT CHECK (adresse_id > 0),
+strasse VARCHAR(255) NOT NULL,
+stadt VARCHAR(255) NOT NULL,
+hausnummer int,
+plz INT CHECK (plz BETWEEN 10000 AND 99999),
+hausnummer_zusatz CHAR(1),
+gebaeude_id INT NOT NULL,
 
-    PRIMARY KEY (ADRESSE_ID)
+PRIMARY KEY (adresse_id)
 );
 
-INSERT INTO Adresse (Adresse_ID, Koordinaten_ID, Ort, Hausnummer, PLZ, Hausnummer_zusatz) VALUES
-(1, 1, 'Frankfurt', '10', 60311, NULL),
-(2, 2, 'München',   '5A', 80331, 'A'),
-(3, 3, 'Berlin',    '20', 10117, NULL),
-(4, 4, 'Hamburg',   '7',  20095, NULL),
-(5, 5, 'Dresden',   '12', 01067, NULL),
-(6, 6, 'Karlsruhe', '3B', 76131, 'B'),
-(7, 7, 'Freiburg',  '9',  79098, NULL);
+INSERT INTO Adresse VALUES
+                        (1, 'Hauptstraße', 'Berlin', 12, 10115, 'a', 1),
+                        (2, 'Bahnhofstraße', 'München', 5, 80331, NULL, 2),
+                        (3, 'Zeil', 'Frankfurt', 98, 60313, NULL, 3),
+                        (4, 'Alsterweg', 'Hamburg', 7, 20095, 'b', 4),
+                        (5, 'Königsallee', 'Düsseldorf', 1, 40212, NULL, 5),
+                        (6, 'Marktplatz', 'Karlsruhe', 22, 76133, NULL, 6),
+                        (7, 'Lister Meile', 'Hannover', 8, 30161, NULL, 7);
+
+
+
+
 
 

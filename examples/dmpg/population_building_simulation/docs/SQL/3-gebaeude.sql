@@ -1,19 +1,22 @@
-CREATE TABLE GEBAEUDE (
-    GEBAEUDE_ID   INT CHECK ( GEBAEUDE_ID > 0 ),
-    ADRESSE_ID    INT NOT NULL REFERENCES ADRESSE(ADRESSE_ID),
-    GRUNDFLAECHE  NUMERIC CHECK (GRUNDFLAECHE >= 0),
-    ETAGENZAHL  INT CHECK (ETAGENZAHL > 0),
-    TYP           VARCHAR(30),
+CREATE TABLE Gebaeude (
+gebaeude_id INT CHECK (gebaeude_id > 0),
+grundflaeche FLOAT CHECK (grundflaeche >= 0),
+etagenanzahl INT CHECK (etagenanzahl > 0),
+typ ENUM ('Einfamilienhaus', 'Mehrfamilienhaus', 'Unbestimmt'),
+koordinaten_id INT,
 
-    PRIMARY KEY (GEBAEUDE_ID)
+PRIMARY KEY (gebaeude_id)
+
 );
 
-INSERT INTO Gebaeude (Gebaeude_ID, Adresse_ID, Grundflaeche, Etagenzahl, Typ) VALUES
-(1, 1, 120.5, 3, 'Mehrfamilienhaus'),
-(2, 2, 90.0,  2, 'Einfamilienhaus'),
-(3, 3, 300.0, 6, 'Mehrfamilienhaus'),
-(4, 4, 60.0,  1, 'Einfamilienhaus'),
-(5, 5, 220.0, 4, 'Mehrfamilienhaus'),
-(6, 6, 150.0, 3, 'Mehrfamilienhaus'),
-(7, 7, 80.0,  2, 'Einfamilienhaus');
+INSERT INTO Gebaeude VALUES
+                         (1, 120.5, 2, 'Einfamilienhaus', 1),
+                         (2, 450.0, 5, 'Mehrfamilienhaus', 2),
+                         (3, 300.0, 4, 'Mehrfamilienhaus', 3),
+                         (4, 90.0, 1, 'Einfamilienhaus', 4),
+                         (5, 600.0, 6, 'Mehrfamilienhaus', 5),
+                         (6, 200.0, 3, 'Unbestimmt', 6),
+                         (7, 350.0, 4, 'Mehrfamilienhaus', 7);
+
+
 

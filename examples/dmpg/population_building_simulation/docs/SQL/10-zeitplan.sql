@@ -1,20 +1,20 @@
-CREATE TABLE ZEITPLAN (
-    ZEITPLAN_ID INT,
-    STARTZEIT   TIME NOT NULL,
-    ENDZEIT     TIME NOT NULL,
-    DAUER       INT,
-    TYP         VARCHAR(50),
+CREATE TABLE Zeitplan (
+zeitplan_id INT CHECK (zeitplan_id > 0),
+startzeit TIME,
+endzeit TIME,
+dauer TIME,
+wochentag enum ('Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'),
 
-    PRIMARY KEY (ZEITPLAN_ID)
+PRIMARY KEY (zeitplan_id),
+CHECK (startzeit < endzeit)
 );
 
-
-INSERT INTO Zeitplan (Zeitplan_ID, Startzeit, Endzeit, Dauer, Typ) VALUES
-(1, '07:00', '08:00', 60,  'Physiologisch'),  -- 1 Stunde
-(2, '18:00', '19:30', 90,  'Freizeit'),       -- 1:30 Stunden
-(3, '09:00', '17:00', 480, 'Arbeit'),         -- 8 Stunden
-(4, '12:00', '12:30', 30,  'Pause'),          -- 30 Minuten
-(5, '20:00', '22:00', 120, 'Freizeit'),       -- 2 Stunden
-(6, '06:30', '07:00', 30,  'Physiologisch'),  -- 30 Minuten
-(7, '22:30', '23:00', 30,  'Physiologisch');  -- 30 Minuten
+INSERT INTO Zeitplan VALUES
+                         (1, '08:00', '16:00', '08:00', 'Mo'),
+                         (2, '09:00', '17:00', '08:00', 'Di'),
+                         (3, '10:00', '18:00', '08:00', 'Mi'),
+                         (4, '07:00', '15:00', '08:00', 'Do'),
+                         (5, '06:00', '14:00', '08:00', 'Fr'),
+                         (6, '12:00', '20:00', '08:00', 'Sa'),
+                         (7, '13:00', '21:00', '08:00', 'So');
 
