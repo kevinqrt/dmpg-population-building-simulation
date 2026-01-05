@@ -6,7 +6,7 @@ CITY POPULATION SIMULATION - RESULTS
   Simulation Duration:    30 days
   Start Population:       51,177
   Final Population:       51170
-  Number of Living Houses:       2,520
+  Number of Living Houses:       18,865
   Number of Workplaces:   142
   Work Hours:             6:00 - 18:00
   Shift Duration:         7-9 hours
@@ -23,16 +23,16 @@ CITY POPULATION SIMULATION - RESULTS
   Net Population Change:  -7
   Births per Day:         1.50
   Deaths per Day:         1.73
-  Youngest Death:         38
+  Youngest Death:         8
   Oldest Death:           100
-  Avg Death:              72.6
+  Avg Death:              71.9
 
 -------------------------WORKPLACE STATISTICS-------------------------
   Workplaces:             142
-  Shifts per Workplace:   6021.7 avg (5998-6049 range)
+  Shifts per Workplace:   7428.0 avg (7394-7469 range)
   ----------------------------------------
-  Total Shifts:           855,082
-  Average Shifts/Day:     28502.7
+  Total Shifts:           1,054,782
+  Average Shifts/Day:     35159.4
 
 -------------------------WORK TIME STATISTICS-------------------------
   Average Shift Duration: 479.9 min (8.0 hours)
@@ -40,13 +40,13 @@ CITY POPULATION SIMULATION - RESULTS
   Longest Shift:          540.0 min (9.0 hours)
 
 --------------------------COMMUTE STATISTICS--------------------------
-  Total Commutes:         855,082
-  Commutes per Day:       28502.7
-  Avg Commutes/Worker:    20.7 (over 30 days)
+  Total Commutes:         1,054,782
+  Commutes per Day:       35159.4
+  Avg Commutes/Worker:    25.5 (over 30 days)
 
 ------INITIAL STATE STATISTICS – COMMUTING DISTANCE HOME TO WORK------
   Min.:         0.02 km
-  Max.:         15.32 km
-  Average:      4.24 km
+  Max.:         14.91 km
+  Average:      3.31 km
 
 ======================================================================

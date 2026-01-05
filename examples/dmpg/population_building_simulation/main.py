@@ -3,13 +3,17 @@ import simpy
 from dmpg_logs.trace_logging.setup_logging import setup_logging
 from examples.dmpg.population_building_simulation import config
 from examples.dmpg.population_building_simulation import helpers
-from examples.dmpg.population_building_simulation.components.building_model import Building
+from examples.dmpg.population_building_simulation.components.building_model import (
+    Building,
+)
 from examples.dmpg.population_building_simulation.db import db
 from examples.dmpg.population_building_simulation.world_builder import WorldBuilder
 from src.core.components.date_time import DateTime
 from src.core.components.model import Model
 from src.core.simulation.simulation import run_simulation
-from examples.dmpg.population_building_simulation.components.birth_source import BirthSource
+from examples.dmpg.population_building_simulation.components.birth_source import (
+    BirthSource,
+)
 from examples.dmpg.population_building_simulation.components.death_sink import DeathSink
 
 
@@ -33,7 +37,6 @@ def setup_city_model(env: simpy.Environment) -> None:
 
     world = WorldBuilder(env)
     world.build_storage_queues()
-
 
     # Create and distribute population
     houses = world.get_houses()
@@ -60,12 +63,6 @@ def main() -> None:
     db.create_tables([Building], safe=True)
 
     sys.stdout = open("population_building_simulation_output.txt", "w")
-
-    """Run the city population simulation."""
-    print("\n" + "=" * 70)
-    print("CITY POPULATION SIMULATION")
-    print("=" * 70)
-
 
     run_simulation(
         model=setup_city_model,
