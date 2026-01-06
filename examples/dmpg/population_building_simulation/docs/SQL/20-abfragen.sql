@@ -1,26 +1,22 @@
--- =========================================
--- 1. Alle privaten Eigentümer (Personen)
--- =========================================
+# 1. Alle privaten Eigentümer (Personen)
 SELECT p.ssn,
        p.vorname,
        p.nachname,
-       p.alter
+       p.lebensalter
 FROM Person p
          JOIN Privateigentuemer pe ON p.ssn = pe.ssn;
 
 
--- =========================================
--- 2. Alle gewerblichen Eigentümer
--- =========================================
+# 2. Alle gewerblichen Eigentümer
+
 SELECT g.gewerbe_id,
        g.firmenname,
        g.ust_id
 FROM Gewerbeeigentuemer g;
 
 
--- =========================================
--- 3. Barrierefreie Wohnungen
--- =========================================
+
+# 3. Barrierefreie Wohnungen
 SELECT wohnungsnummer,
        ausstattung,
        bewohner_anzahl
@@ -28,10 +24,8 @@ FROM Wohnung
 WHERE barrierefrei = TRUE;
 
 
--- =========================================
--- 4. Eigentümer mit ihren Wohnungen
--- (über Mietverhältnis)
--- =========================================
+# 4. Eigentümer mit ihren Wohnungen
+
 SELECT p.vorname,
        p.nachname,
        w.wohnungsnummer,
@@ -43,9 +37,8 @@ FROM Mietverhaeltnis m
          JOIN Person p ON pe.ssn = p.ssn;
 
 
--- =========================================
--- 5. Alle Personen mit ihren Zeitplänen
--- =========================================
+# 5. Alle Personen mit ihren Zeitplänen
+
 SELECT p.vorname,
        p.nachname,
        z.startzeit,
@@ -56,9 +49,8 @@ FROM Person p
          LEFT JOIN Zeitplan z ON pz.zeitplan_id = z.zeitplan_id;
 
 
--- =========================================
--- 6. Alle Wohnungen mit Adresse
--- =========================================
+# 6. Alle Wohnungen mit Adresse
+
 SELECT w.wohnungsnummer,
        w.ausstattung,
        a.strasse,
@@ -70,34 +62,9 @@ FROM Wohnung w
          JOIN Adresse a ON g.gebaeude_id = a.gebaeude_id;
 
 
--- =========================================
--- 7. Personen und ihre Bedürfnisse
--- =========================================
-SELECT p.vorname,
-       p.nachname,
-       b.name AS beduerfnis,
-       b.prioritaet
-FROM Person p
-         JOIN Personenbeduerfnisse pb ON p.ssn = pb.ssn
-         JOIN Beduerfnis b ON pb.beduerfnis_id = b.beduerfnis_id;
 
+# 7. Durchschnittliche Bewohnerzahl pro Stadt
 
--- =========================================
--- 8. Personen mit hoch priorisierten Bedürfnissen
--- =========================================
-SELECT p.vorname,
-       p.nachname,
-       b.name,
-       b.prioritaet
-FROM Person p
-         JOIN Personenbeduerfnisse pb ON p.ssn = pb.ssn
-         JOIN Beduerfnis b ON pb.beduerfnis_id = b.beduerfnis_id
-WHERE b.prioritaet >= 80;
-
-
--- =========================================
--- 9. Durchschnittliche Bewohnerzahl pro Stadt
--- =========================================
 SELECT a.stadt,
        AVG(w.bewohner_anzahl) AS durchschnitt_bewohner
 FROM Wohnung w
@@ -106,9 +73,8 @@ FROM Wohnung w
 GROUP BY a.stadt;
 
 
--- =========================================
--- 10. Ziele mit Koordinaten
--- =========================================
+# 8. Ziele mit Koordinaten
+
 SELECT z.name AS ziel,
        k.breitengrad,
        k.laengengrad
@@ -116,9 +82,8 @@ FROM Ziel z
          JOIN Koordinaten k ON z.koordinaten_id = k.koordinaten_id;
 
 
--- =========================================
--- 11. Aktivitäten mit Dauer
--- =========================================
+# 9. Aktivitäten mit Dauer
+
 SELECT z.name AS ziel,
        a.startzeit,
        a.endzeit,
@@ -127,9 +92,9 @@ FROM Aktivitaet a
          JOIN Ziel z ON a.ziel_id = z.ziel_id;
 
 
--- =========================================
--- 12. Kurze und lange Aktivitäten (UNION)
--- =========================================
+
+# 10. Kurze und lange Aktivitäten (UNION)
+
 -- Kurze Aktivitäten (< 1 Stunde)
 SELECT z.name AS ziel,
        TIMEDIFF(a.endzeit, a.startzeit) AS dauer,
@@ -149,9 +114,9 @@ FROM Aktivitaet a
 WHERE TIMEDIFF(a.endzeit, a.startzeit) > '02:00:00';
 
 
--- =========================================
--- 13. Anzahl Wohnungen pro Eigentümer
--- =========================================
+
+# 11. Anzahl Wohnungen pro Eigentümer
+
 SELECT e.eigentuemer_id,
        COUNT(m.wohnungsnummer) AS anzahl_wohnungen
 FROM Eigentuemer e
@@ -159,9 +124,8 @@ FROM Eigentuemer e
 GROUP BY e.eigentuemer_id;
 
 
--- =========================================
--- 14. Bewohner mit Haustieren
--- =========================================
+# 12. Bewohner mit Haustieren
+
 SELECT p.vorname,
        p.nachname
 FROM Bewohner b
