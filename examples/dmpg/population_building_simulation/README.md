@@ -64,3 +64,24 @@ Funktionen des Pull-Systems:
 - Arbeitet nachfragebasiert (Pull)
 - Prüft, welche Bürger für den Arbeitsplatz geeignet sind (`AgeGroup`)
 - Achtet auf Arbeitszeiten (`WorkScheduleWeek`), Verfügbarkeit und Qualifikation
+
+
+## BirthSource (Source)
+
+Die `BirthSource` verwaltet die demografische Entwicklung der Simulation.
+
+- **Alterung:** Alle `Human` altern täglich zentral in der `BirthSource` (`+1/365` Jahre).
+- **Geburten:** Neue Menschen werden täglich gemäß Geburtenrate erzeugt und auf Häuser verteilt.
+- **Todesfälle:** Altersabhängig simuliert und an den `DeathSink` übergeben.
+- **Statistik:** Erfasst Geburten, Todesfälle und aktualisiert die Bevölkerungsgröße.
+
+
+## DeathSink (Sink)
+
+Der `DeathSink` verarbeitet Todesfälle in der Simulation.
+
+- Entfernt verstorbene `Human` aus der globalen Bevölkerungsliste
+- Entfernt sie aus ihrem zugewiesenen Haus
+- Markiert die Entität als tot (`is_dead = True`)
+- Aktualisiert die Bevölkerungsgröße
+- Zerstört die Entität final über den `Sink`
