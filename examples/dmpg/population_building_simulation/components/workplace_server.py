@@ -39,6 +39,7 @@ class Workplace(Server):
         Before-processing trigger: Called when worker arrives at workplace.
         Records the start time of the work shift and marks this day as worked.
         """
+
         if isinstance(entity, Human):
             entity.work_start_time = self.env.now
             # Mark which day the worker is working (to limit to 1 shift per day)
@@ -52,6 +53,7 @@ class Workplace(Server):
 
         Records work statistics and sends worker back home.
         """
+
         if entity.home_name:
             # Record work time statistic
             if entity.work_start_time is not None:
@@ -61,7 +63,7 @@ class Workplace(Server):
                 entity.work_start_time = None
 
             # Send worker home
-            home: House = Model().get_component_by_name(entity.home_name)  # type: ignore DMPG is not type save
+            home: House = Model().get_component_by_name(entity.home_name)
             if home:
                 home.handle_entity_arrival(entity)
                 return False  # Don't use default routing

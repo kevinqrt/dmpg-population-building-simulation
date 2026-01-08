@@ -24,6 +24,8 @@ def setup_city_model(env: simpy.Environment) -> None:
     Architecture:
     - Houses (Storage): Hold citizens, put workers in workplace queues
     - Workplaces (Server): Pull workers during operating hours, process (work), send home
+    - BirthSource (Source): Handles daily population dynamics, including births, aging, and selection of deaths
+    - DeathSink (Sink): Passively removes deceased citizens from the system and cleans up all associated state
     - Pull System: StorageManager coordinates worker queues between houses and workplaces
     """
 

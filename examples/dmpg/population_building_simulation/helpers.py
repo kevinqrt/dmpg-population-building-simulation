@@ -42,6 +42,7 @@ def haversine_distance_km(
     :param lon2: Longitude of point 2
     :return: Distance in kilometers
     """
+
     # Earth radius in kilometers
     R = 6371.0
 

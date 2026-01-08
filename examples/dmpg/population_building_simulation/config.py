@@ -1,5 +1,5 @@
 """
-This module contains configuration constants for the population building simulation.
+Configuration constants and domain assumptions for the population building simulation.
 """
 
 from examples.dmpg.population_building_simulation.helpers import (
@@ -27,6 +27,6 @@ DEATHS_PER_DAY = 1.75
 # TALLY STATISTIC NAMES
 STAT_WORK_TIME = "work_time"  # Time spent working
 STAT_COMMUTES = "daily_commutes"  # Number of commute trips
-STAT_COMMUTE_DISTANCE = "commute_distance_km"
+STAT_COMMUTE_DISTANCE = "commute_distance_km" # Total commute distance in kilometers
 STAT_BIRTHS = "births"  # Total births
 STAT_DEATHS = "deaths"  # Total deaths

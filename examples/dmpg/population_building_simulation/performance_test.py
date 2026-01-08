@@ -5,10 +5,10 @@ import os
 
 from examples.dmpg.population_building_simulation.components.human_entity import Human
 
-# Setze den Pfad zum Projektstammverzeichnis, z.B. zum ModSim-Projekt
+# Set the path to the project root directory, e.g. the ModSim project
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 
-# Füge den Projektstammpfad zum sys.path hinzu
+# Add the project root path to sys.path
 sys.path.insert(0, project_root)
 
 def generate_population(n, env):
@@ -20,10 +20,10 @@ def generate_population(n, env):
     return humans
 
 def performance_test():
-    # Erstelle die Simulationsumgebung
+    # Create the simulation environment
     env = simpy.Environment()
 
-    # Initialisiere den EntityManager mit der Umgebung
+    # Initialize the EntityManager with the environment
     from src.core.components.entity import EntityManager
     EntityManager.initialize(env)
 
@@ -34,7 +34,6 @@ def performance_test():
 
     for size in sizes:
         start_time = time.time()
-        population = generate_population(size, env)
         end_time = time.time()
         duration = end_time - start_time
         duration_ms = duration * 1000
@@ -43,4 +42,3 @@ def performance_test():
 
 if __name__ == "__main__":
     performance_test()
-

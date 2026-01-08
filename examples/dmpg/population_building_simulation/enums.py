@@ -16,6 +16,7 @@ class BuildingType(str, Enum):
         Returns the Overpass-compatible regex for the building tag
         corresponding to this BuildingType.
         """
+
         if self is BuildingType.RESIDENTIAL:
             return r"^(house|detached|semidetached_house|apartments|residential)$"
 

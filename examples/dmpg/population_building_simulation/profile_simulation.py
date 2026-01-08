@@ -1,19 +1,16 @@
 import cProfile
 import pstats
-import simpy
-
 from database.base.models import db
 from dmpg_logs.trace_logging.setup_logging import setup_logging
 from examples.dmpg.population_building_simulation.main import setup_city_model
 from examples.dmpg.population_building_simulation import config
-from examples.dmpg.population_building_simulation.models.building import Building
+from examples.dmpg.population_building_simulation.components.building_model import Building
 from src.core.components.date_time import DateTime
 from src.core.simulation.simulation import run_simulation
 
 
 def profile_simulation():
     print("PROFILE SCRIPT IS RUNNING")
-
 
     setup_logging(log_puffer=True, log_gps=True)
 
@@ -31,8 +28,6 @@ def profile_simulation():
     )
 
     profiler.disable()
-
-
 
     stats = pstats.Stats(profiler)
     stats.dump_stats("simulation.prof")

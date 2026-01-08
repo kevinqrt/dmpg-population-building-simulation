@@ -44,6 +44,7 @@ class House(Storage):
         Non-workers (children, retirees) go to 'stay_home' queue which is never pulled currently.
         Workers who have already worked today return None (handled specially).
         """
+
         if (
             isinstance(entity, Human)
             and entity.is_working_age()
@@ -61,6 +62,7 @@ class House(Storage):
         """
         Override to handle workers who need to wait until the next day.
         """
+
         # Get entity from queue (same as parent)
         if not self.input_queue:
             return
@@ -100,7 +102,10 @@ class House(Storage):
         self.capa_ids.append(capa_id)
 
     def _schedule_next_day_work(self, entity: Human):
-        """Schedule worker to be re-queued at the start of the next work day."""
+        """
+        Schedule worker to be re-queued at the start of the next work day.
+        """
+
         current_time = self.env.now
         current_day = int(current_time // self.MINUTES_PER_DAY)
         next_day_start = (current_day + 1) * self.MINUTES_PER_DAY + (config.WORK_START_HOUR * 60)
@@ -109,7 +114,10 @@ class House(Storage):
         self.env.process(self._delayed_requeue(entity, delay))
 
     def _delayed_requeue(self, entity: Human, delay: float):
-        """Wait and then re-process the entity through the house."""
+        """
+        Wait and then re-process the entity through the house.
+        """
+        
         yield self.env.timeout(delay)
         # Re-enter the house to go through the queue assignment again
         self.handle_entity_arrival(entity)
@@ -123,6 +131,7 @@ class House(Storage):
         When a workplace pulls a worker from the queue, the entity's destination
         is set by StorageManager. This function completes the delivery.
         """
+
         if entity.destination:
             entity.destination.handle_entity_arrival(entity)
 

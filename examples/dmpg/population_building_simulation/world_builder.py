@@ -120,7 +120,7 @@ class WorldBuilder:
 
     @staticmethod
     def _record_initial_commute_distance(human: Human) -> None:
-        # --- COMMUTE DISTANCE ---
+        # COMMUTE DISTANCE
         if human.home_name and human.workplace_name:
             home: House = Model().get_component_by_name(human.home_name)
             workplace: House = Model().get_component_by_name(human.workplace_name)

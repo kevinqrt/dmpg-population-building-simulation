@@ -26,7 +26,7 @@ class BirthSource(Source):
         )
 
     def run(self):
-#https://statistik.nrw/gesellschaft-und-staat/gebiet-und-bevoelkerung/geburten-und-sterbefaelle/sterblichkeit-nach-altersgruppen-und-geschlecht
+        # https://statistik.nrw/gesellschaft-und-staat/gebiet-und-bevoelkerung/geburten-und-sterbefaelle/sterblichkeit-nach-altersgruppen-und-geschlecht
         mortality_rate = {
             (0, 9): 0.5,
             (10, 19): 0.2,
@@ -47,7 +47,7 @@ class BirthSource(Source):
             births = int(self._birth_acc)
             self._birth_acc -= births
 
-            # ---------- GEBURTEN ----------
+            # GEBURTEN
             for _ in range(births):
                 h = Human(
                     name=f"Human_{self.entities_created_pivot_table}",
@@ -67,7 +67,7 @@ class BirthSource(Source):
                 self.entities_created_pivot_table += 1
                 self.number_exited_pivot_table += 1
 
-            # ---------- TODE ----------
+            # TODE
             target_deaths = round(config.DEATHS_PER_DAY * config.SIMULATION_DAYS)
             rate_adj = target_deaths / config.SIMULATION_DAYS
 
@@ -103,7 +103,7 @@ class BirthSource(Source):
             if deaths_today > 0:
                 Model().record_tally_statistic(config.STAT_DEATHS, deaths_today)
 
-            # ---------- POPULATION UPDATE (births only, deaths handled by DeathSink) ----------
+            # POPULATION UPDATE (births only, deaths handled by DeathSink)
             pop = Model().get_state("population")
             Model().update_state("population", pop + births)
             yield self.env.timeout(DateTime.map_time_to_steps(days=1))

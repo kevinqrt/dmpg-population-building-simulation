@@ -32,6 +32,7 @@ class DeathSink(Sink):
         Handle a human arriving at the death sink.
         Removes them from the population before standard sink processing.
         """
+
         # Remove from humans list
         humans_list = Model().get_state("humans")
         if entity in humans_list:

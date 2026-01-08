@@ -32,11 +32,11 @@ class Building(Model):
         lat = center.get("lat")
         lon = center.get("lon")
 
-        # Fallback, falls kein center vorhanden ist
+        # Fallback in case no center is available
         if lat is None or lon is None:
             lat, lon = Building._compute_centroid(element) or (None, None)
 
-        # Fallback, falls kein center vorhanden ist
+        # Fallback in case no center is available
         if lat is None or lon is None:
             lat, lon = Building._compute_centroid(element) or (None, None)
 

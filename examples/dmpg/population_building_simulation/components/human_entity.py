@@ -30,6 +30,7 @@ class Human(Entity):
         """
         Generate age using normal distribution (mean=40, std=18), clamped to 0-100.
         """
+
         age = float(int(random.gauss(40, 18)))
         return float(max(0, min(100, age)))
 
@@ -37,18 +38,21 @@ class Human(Entity):
         """
         Generate gender with 50/50 distribution.
         """
+
         return "male" if random.random() < 0.5 else "female"
 
     def is_working_age(self) -> bool:
         """
         Check if person is of working age (18-65).
         """
+
         return 18 <= self.age < 65
 
     def reset(self) -> None:
         """
         Reset for entity pooling.
         """
+
         self.work_start_time = None
 
     def assign_home(self, index: int, amount_houses: int) -> int:
